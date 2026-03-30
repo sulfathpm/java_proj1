@@ -1,0 +1,45 @@
+private void refreshActions() {
+    actionPanel.removeAll();
+
+    if (!answered) {
+        StyledButton resetBtn = new StyledButton("🔃 Reset", StyledButton.Style.GHOST, Theme.TEXT_DIM);
+        resetBtn.setPreferredSize(new Dimension(110, 42));
+        resetBtn.addActionListener(e -> loadPuzzle());
+
+        StyledButton hintBtn = new StyledButton(hintUsed ? "💡 Used" : "💡 Hint −1pt", StyledButton.Style.GHOST, Theme.ACCENT_GOLD);
+        hintBtn.setPreferredSize(new Dimension(130, 42));
+        hintBtn.setEnabled(!hintUsed);
+        hintBtn.addActionListener(e -> useHint());
+
+        StyledButton submitBtn = new StyledButton("Submit ✅", StyledButton.Style.PRIMARY);
+        submitBtn.setPreferredSize(new Dimension(130, 42));
+        submitBtn.addActionListener(e -> checkAnswer());
+
+        // 👇 ADD THIS EXIT BUTTON
+        StyledButton exitBtn = new StyledButton("🚪 Exit", StyledButton.Style.DANGER);
+        exitBtn.setPreferredSize(new Dimension(100, 42));
+        exitBtn.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Exit the game? Your score will be lost.",
+                "Exit Game",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+            if (confirm == JOptionPane.YES_OPTION) {
+                dispose();
+                new HomeScreen().setVisible(true);
+            }
+        });
+
+        actionPanel.add(resetBtn);
+        actionPanel.add(hintBtn);
+        actionPanel.add(submitBtn);
+        actionPanel.add(exitBtn); // 👈 ADD THIS LINE
+    } else {
+        // ... rest of else block stays the same
+    }
+
+    actionPanel.revalidate();
+    actionPanel.repaint();
+}
